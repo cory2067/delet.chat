@@ -7,3 +7,7 @@ Box: how long to have messages last for (idk, maybe we should just control this 
 
 Box: how long to delete chat after last message
   create delete now thing
+
+Have notification sign on tab
+
+Ability to send pictures
