@@ -33,10 +33,10 @@
 			var initials = "SH";
 
 			//function that submits text when user presses enter
-			$('#text').keydown(function(e) {
-				console.log(e);
-				if (e.which == 13) {
-					var msg = $('#text').val();
+			$('#textBox').keydown(function(e) {
+				var msg = $('#textBox').val();
+				if (e.which == 13 && msg !== "") {
+					console.log("yo: " + $('#textBox').val());
 					//$('#chat-content').append('<p id='+Date.now()+' class=\'msg\'>' + msg + '</p>');
 					$('#chat-content').append(""+
 							"<div id="+Date.now()+" style=\"opacity:1.0\"><span class=\"mdl-chip mdl-chip--contact\">"+
@@ -44,7 +44,8 @@
 									"<span class=\"mdl-chip__text\">"+msg+"</span>"+
 							"</span></div>"+
 					"")
-					$("#text").val("");
+				//console.log(msg);
+					$("#textBox").val("");
 				}
 			});
 			setInterval(function() {
@@ -75,6 +76,10 @@
 
 		</div>
 	</div>
+	<div id="text" class="mdl-textfield mdl-js-textfield">
+    <input class="mdl-textfield__input" type="text" id="textBox">
+    <label class="mdl-textfield__label" for="sample1">Enter a message...</label>
+  </div>
  	</div>
 </body>
 
