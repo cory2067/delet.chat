@@ -1,0 +1,35 @@
+<html>
+<head>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+<style>
+#chat {
+  height:50%;
+  position:relative;
+}
+
+#chat-content {
+  position:absolute;
+  bottom:0;
+}
+</style>
+
+<script type="text/javascript">
+  $(function() {
+    $('#button').click(function() {
+ 	    var msg = $('#text').val();
+ 	    $('#chat-content').append('<p>'+msg+'</p>');
+      $("#text").val("");
+    });
+  });
+</script>
+</head>
+<body>
+  <div id="chat">
+    <div id="chat-content">
+
+    </div>
+  </div>
+  <input type="text" id="text">
+  <button id="button" type="button">Send</button>
+</body>
+</html>

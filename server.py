@@ -13,8 +13,8 @@ def index():
 @socketio.on('msg')
 def handle_msg(msg):
 	#Messages are in the form ROOM:::MESSAGE
-	print('received' + msg)
-	emit('receive', msg, room=msg.split(":::")[0])
+	print('received ' + msg)
+	emit('receive', msg.split(":::")[1], room=msg.split(":::")[0])
 
 @socketio.on('join')
 def on_join(room):
@@ -23,7 +23,7 @@ def on_join(room):
 	join_room(room)
 	print(room)
 	#emit('confirm', str(id))
-	emit('receive', 'User'+str(id)+'has entered the room.', room=room)
+	emit('receive', 'User '+str(id)+' has entered the room.', room=room)
 
 
 @socketio.on('leave')
