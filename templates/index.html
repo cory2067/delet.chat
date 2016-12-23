@@ -13,7 +13,7 @@
 			socket.on('receive', function(msg) {
 				alert(msg);
 			});
-
+			
 			//socket.on('confirm', function(msg) {
 			//	alert("U are" + msg);
 			//});
@@ -24,9 +24,26 @@
 			}, 1000);
 
 			socket.emit('join', 'mememan');
-
+			
+			
+			$('#submitbutton').click(function() {
+				var msg = document.getElementById('msgForm').value;
+				$('#main').append('<p>'+var+'</p>');
+				document.getElementById('msgForm').value = "";
 		});
 	</script>
 </head>
-<body>o</body>
+<body>
+	<div id="main">
+		<h1>Delet.chat</h1>
+		<div id='msgStream'>
+		</div>
+		<form id="msgForm">
+			Enter your message:
+			<input type="text" name="textbox">
+		</form>
+		<button id="submitButton">Submit</button>
+	</div>
+	
+</body>
 </html>
