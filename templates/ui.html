@@ -33,10 +33,9 @@
 			var initials = "SH";
 
 			//function that submits text when user presses enter
-			$('#text').keydown(function(e) {
-				console.log(e);
-				if (e.which == 13) {
-					var msg = $('#textBox').val();
+			$('#textBox').keydown(function(e) {
+				var msg = $('#textBox').val();
+				if (e.which == 13 && msg !== "") {
 					console.log("yo: " + $('#textBox').val());
 					//$('#chat-content').append('<p id='+Date.now()+' class=\'msg\'>' + msg + '</p>');
 					$('#chat-content').append(""+
