@@ -2,21 +2,34 @@
 
 <head>
 	<title>Flask-SocketIO Test</title>
-	<script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.0.6/socket.io.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.0.6/socket.io.min.js"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 	<style>
 		#chat {
 			height: 50%;
 			position: relative;
 		}
-
 		#chat-content {
 			position: absolute;
 			bottom: 0;
 		}
+		#popup-full {
+			left: 0;
+			top: 0;
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			background-color: grey;
+			opacity:0.3;
+		}
 	</style>
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
+
 			var socket = io.connect("http://35.161.36.162:80", {
 //				transports: ['websocket']
 			})
@@ -26,7 +39,12 @@
 			});
 
 			socket.on('receive', function(msg) {
-				$('#chat-content').append('<p>' + msg + '</p>');
+					$('#chat-content').append(""+
+							"<div id="+Date.now()+" style=\"opacity:1.0\"><span class=\"mdl-chip mdl-chip--contact\">"+
+									"<span class=\"mdl-chip__contact mdl-color--teal mdl-color-text--white\">"+initials+"</span>"+
+									"<span class=\"mdl-chip__text\">"+msg+"</span>"+
+							"</span></div>"+
+					"")
 			});
 
 			$('#button').click(function() {
@@ -34,27 +52,56 @@
 				$("#text").val("");
 				socket.emit('msg', 'mememan:::' + msg);
 			});
-			
+
 			window.onbeforeunload = function(e) {
 			      	socket.disconnect();
 			};
-			
-			//socket.on('confirm', function(msg) {
-			//	alert("U are" + msg);
-			//});
+			//popup that asks for initials
+			var initials = "SH";
 
+			//function that submits text when user presses enter
+			$('#textBox').keydown(function(e) {
+				var msg = $('#textBox').val();
+				if (e.which == 13 && msg !== "") {
+					console.log("yo: " + $('#textBox').val());
+					//$('#chat-content').append('<p id='+Date.now()+' class=\'msg\'>' + msg + '</p>');
+				//console.log(msg);
+					$("#textBox").val("");
+				}
+			});
+			setInterval(function() {
+				console.log("here");
+				$('#chat-content').children().each(function() {
+					$(this).css("opacity",$(this).css("opacity") - .02);
+					if (!($(this).css("opacity") > 0)) {
+						$(this).remove();
+					}
+				});
+			},100);
+		//function that changes the opacity of messages after a certain amount of time
+		//$('.msg')
 		});
 	</script>
 </head>
 
 <body>
+	<!--<div id="popup-full">
+			<div class="mdl-textfield mdl-js-textfield">
+		    <input class="mdl-textfield__input" type="text" id="sample1">
+		    <label class="mdl-textfield__label" for="sample1">Enter your initials</label>
+	  	</div>
+		<div>
+	</div>-->
 	<div id="chat">
 		<div id="chat-content">
 
 		</div>
 	</div>
-	<input type="text" id="text">
-	<button id="button" type="button">Send</button>
+	<div id="text" class="mdl-textfield mdl-js-textfield">
+    <input class="mdl-textfield__input" type="text" id="textBox">
+    <label class="mdl-textfield__label" for="sample1">Enter a message...</label>
+  </div>
+ 	</div>
 </body>
 
 </html>
