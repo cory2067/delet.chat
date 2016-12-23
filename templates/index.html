@@ -47,11 +47,11 @@
 					"")
 			});
 
-			$('#button').click(function() {
+			/*$('#button').click(function() {
 				var msg = $('#text').val();
 				$("#text").val("");
 				socket.emit('msg', 'mememan:::' + msg);
-			});
+			});*/
 
 			window.onbeforeunload = function(e) {
 			      	socket.disconnect();
@@ -66,6 +66,7 @@
 					console.log("yo: " + $('#textBox').val());
 					//$('#chat-content').append('<p id='+Date.now()+' class=\'msg\'>' + msg + '</p>');
 				//console.log(msg);
+				  socket.emit('msg', 'mememan:::' + msg);
 					$("#textBox").val("");
 				}
 			});
