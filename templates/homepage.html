@@ -1,0 +1,32 @@
+<html>
+
+<head>
+	<title>Delet Chat Homepage</title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.0.6/socket.io.min.js"></script>
+  <style>
+
+  </style>
+
+  <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+          var $button = $("#newChatButton");
+          var counter = 0;
+          $button.click(function() {
+            counter++;
+            if (counter == 1) {
+              var url = socket.emit('createRoom');
+              $("#chatLink").append("<p><a href=\""+url+"\">"+url+"</a></p>");
+            }
+          });
+      });
+  </script>
+
+</head>
+
+<body>
+    <button id="newChatButton" type="button">Create new chat room</button>
+    <div id="chatLink">
+
+    </div>
+</body>
