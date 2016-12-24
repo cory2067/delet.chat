@@ -26,12 +26,13 @@ def room(roomID):
 
 @socketio.on('createRoom')
 def create_room():
-	while (true):
+	while True:
 		#generate chat room name
-		roomName = '23q4adsf';
-		if (c.execute("SELECT TOP 1 name FROM ChatRooms WHERE name=\""+roomID+"\"" == ""):
+		roomName = '23q4adsf'
+		c.execute("SELECT TOP 1 name FROM ChatRooms WHERE name=\""+roomID+"\"")
+		if c.fetchone() == "":
 		     return "//"+roomID+"//"
-	return null
+	return none
 	
 @socketio.on('msg')
 def handle_msg(msg):
