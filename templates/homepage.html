@@ -14,7 +14,7 @@
 			$("#newChat").click(function() {
 				counter++;
 				if (counter == 1) {
-					var url = $.post("/create", function() {
+					$.post("/create", function(url) {
 						$("#chatLink").append("<p><a href=\"" + url + "\">" + url + "</a></p>");
 					});
 				}
