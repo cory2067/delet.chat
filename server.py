@@ -1,11 +1,13 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit, join_room, leave_room, send
 import eventlet
-
+from random import choice
 import sqlite3
 conn = sqlite3.connect('chatRoom.db')
 c = conn.cursor()
-c.execute("CREATE TABLE ChatRooms (name TEXT);")
+#run these lines only if you want to create a new database
+#c.execute("CREATE TABLE rooms (name TEXT);")
+#conn.commit()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -24,16 +26,20 @@ def homepage():
 def room(roomID):
 	return render_template('index.html',room=roomID)
 
-@socketio.on('createRoom')
+#homepage sends a POST request, returns a new room
+@app.route('/create', methods = ['POST'])
 def create_room():
+	#list of all alphanumeric characters
+	chars = [chr(a) for a in (range(48,58)+range(97,123)+range(65,91))]
 	while True:
 		#generate chat room name
-		roomName = '23q4adsf'
-		c.execute("SELECT TOP 1 name FROM ChatRooms WHERE name=\""+roomID+"\"")
-		if c.fetchone() == "":
-		     return "//"+roomID+"//"
-	return none
-	
+		roomName = "".join([choice(chars) for a in range(8)])
+		c.execute("SELECT * FROM ChatRooms WHERE name=\""+roomID+"\"")
+		if c.fetchall():
+			c.execute("INSERT INTO rooms VALUES (\""+roomID+"\")")
+			conn.commit()
+			return roomID
+/
 @socketio.on('msg')
 def handle_msg(msg):
         #Messages are in the form ROOM:::MESSAGE
@@ -49,7 +55,7 @@ def on_join(room):
         print(room)
         #emit('confirm', str(id))
         emit('receive', 'User '+str(id)+' has entered the room.', room=room)
-        eventlet.sleep(0)        
+        eventlet.sleep(0)
 
 @socketio.on('disconnect')
 def on_leave():
