@@ -30,10 +30,24 @@
 		}
 	</style>
 	<script type="text/javascript" charset="utf-8">
+		function renderHTML(text) {
+			//regex to recognize URLs that I stole from stackoverflow
+			var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+
+			return text.replace(urlRegex, function(url) {
+
+				if ((url.indexOf(".jpg") > 0) || (url.indexOf(".png") > 0) || (url.indexOf(".gif") > 0)) {
+					return '<a href="' + url + '" target="_blank"><img style="width: 200px; border: 0px; -moz-border-radius: 5px; border-radius: 5px;" src="' + url + '">' + '</a>' + '<br/>'
+				} else {
+					return '<a href="' + url + '" target="_blank">' + url + '</a>' + '<br/>'
+				}
+			})
+		}
+
 		$(document).ready(function() {
 
 			var socket = io.connect("http://delet.us:80", {
-			//var socket = io.connect("http://127.0.0.1:5000", { //		for testing
+				//var socket = io.connect("http://127.0.0.1:5000", { //		for testing
 				//				transports: ['websocket']
 			})
 			socket.on('connect', function() {
@@ -45,7 +59,7 @@
 				$('#chat-content').append("" +
 					"<div id=" + Date.now() + " style=\"opacity:1.0\"><span class=\"mdl-chip mdl-chip--contact\">" +
 					"<span class=\"mdl-chip__contact mdl-color--teal mdl-color-text--white\">" + data['name'] + "</span>" +
-					"<span class=\"mdl-chip__text\">" + data['msg'] + "</span>" +
+					"<span class=\"mdl-chip__text\">" + renderHTML(data['msg']) + "</span>" +
 					"</span></div>" +
 					"")
 			});
