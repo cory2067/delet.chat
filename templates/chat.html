@@ -37,7 +37,8 @@
 			return text.replace(urlRegex, function(url) {
 
 				if ((url.indexOf(".jpg") > 0) || (url.indexOf(".png") > 0) || (url.indexOf(".gif") > 0)) {
-					return '<a href="' + url + '" target="_blank"><img style="width: 200px; border: 0px; -moz-border-radius: 5px; border-radius: 5px;" src="' + url + '">' + '</a>' + '<br/>'
+					//in the future, maybe make this do something different to render the image
+					return '<a href="' + url + '" target="_blank">' + url + '</a>' + '<br/>'
 				} else {
 					return '<a href="' + url + '" target="_blank">' + url + '</a>' + '<br/>'
 				}
