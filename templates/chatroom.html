@@ -29,16 +29,27 @@
 	</style>
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
+			var loc = window.location.href
+			var roomID = loc.substring(loc.indexOf("chat")+5,loc.indexOf("chat")+13);
+			//var roomID = String({{ room }});
+			console.log("ROOMID:"+roomID);
 
-			var socket = io.connect("http://delet.us:80", {
-			//var socket = io.connect("http://127.0.0.1:5000", { for testing
+			//var socket = io.connect("http://delet.us:80", {
+			var socket = io.connect("http://127.0.0.1:5000", {
 //				transports: ['websocket']
 			})
 			socket.on('connect', function() {
-				console.log("it work");
-				socket.emit('join', 'mememan');
+				var initials = "";
+				while (true) {
+					initials = prompt("Please enter your initials\n(only one to two characters)","AA");
+					if (!(initials) || initials.length >2) {
+						alert("Error: Initials must be one to two characters.");
+						continue;
+					}
+					break;
+				socket.emit('join', roomID, initials);
+				}
 			});
-
 			socket.on('receive', function(msg) {
 					$('#chat-content').append(""+
 							"<div id="+Date.now()+" style=\"opacity:1.0\"><span class=\"mdl-chip mdl-chip--contact\">"+
@@ -47,19 +58,16 @@
 							"</span></div>"+
 					"")
 			});
-
 			/*$('#button').click(function() {
 				var msg = $('#text').val();
 				$("#text").val("");
 				socket.emit('msg', 'mememan:::' + msg);
 			});*/
-
 			window.onbeforeunload = function(e) {
 			      	socket.disconnect();
 			};
 			//popup that asks for initials
 			var initials = "SH";
-
 			//function that submits text when user presses enter
 			$('#textBox').keydown(function(e) {
 				var msg = $('#textBox').val();
@@ -67,7 +75,7 @@
 					console.log("yo: " + $('#textBox').val());
 					//$('#chat-content').append('<p id='+Date.now()+' class=\'msg\'>' + msg + '</p>');
 				//console.log(msg);
-				  socket.emit('msg', 'mememan:::' + msg);
+				  socket.emit('msg', msg, roomID);
 					$("#textBox").val("");
 				}
 			});
