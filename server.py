@@ -39,7 +39,7 @@ def create_room():
 			c.execute("INSERT INTO rooms VALUES (\""+roomID+"\")")
 			conn.commit()
 			return roomID
-/
+
 @socketio.on('msg')
 def handle_msg(msg):
         #Messages are in the form ROOM:::MESSAGE
