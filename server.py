@@ -33,7 +33,7 @@ def create_room():
 	chars = [chr(a) for a in (range(48,58)+range(97,123)+range(65,91))]
 	while True:
 		#generate chat room name
-		roomName = "".join([choice(chars) for a in range(8)])
+		roomID = "".join([choice(chars) for a in range(8)])
 		c.execute("SELECT * FROM ChatRooms WHERE name=\""+roomID+"\"")
 		if c.fetchall():
 			c.execute("INSERT INTO rooms VALUES (\""+roomID+"\")")
