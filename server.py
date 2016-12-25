@@ -22,7 +22,7 @@ def index():
 def homepage():
 	return render_template('homepage.html')
 
-@app.route('/<roomID>/')
+@app.route('/chat/<roomID>/')
 def room(roomID):
 	return render_template('index.html',room=roomID)
 
