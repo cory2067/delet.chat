@@ -29,8 +29,8 @@
 	</style>
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
-
 			var socket = io.connect("http://delet.us:80", {
+			//var socket = io.connect("http://127.0.0.1:5000", { for testing
 //				transports: ['websocket']
 			})
 			socket.on('connect', function() {
