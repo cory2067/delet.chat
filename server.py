@@ -16,11 +16,11 @@ global id
 id=0
 @app.route('/')
 def index():
-	return render_template('homepage.html')
+	return render_template('index.html')
 
 @app.route('/<roomID>')
 def room(roomID):
-	return render_template('chatroom.html',room=roomID)
+	return render_template('chat.html',room=roomID)
 
 #homepage sends a POST request, returns a new room
 @app.route('/create', methods = ['POST'])
