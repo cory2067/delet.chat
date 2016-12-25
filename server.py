@@ -16,13 +16,9 @@ global id
 id=0
 @app.route('/')
 def index():
-	return render_template('index.html')
-
-@app.route('/a/homepage')
-def homepage():
 	return render_template('homepage.html')
 
-@app.route('/a/chat/<roomID>/')
+@app.route('/<roomID>')
 def room(roomID):
 	return render_template('chatroom.html',room=roomID)
 
@@ -34,20 +30,17 @@ def create_room():
 	while True:
 		#generate chat room name
 		roomID = "".join([choice(chars) for a in range(8)])
-		c.execute("SELECT * FROM ChatRooms WHERE name=\""+roomID+"\"")
-		print("yo boi:"+"".join(c.fetchall()))
-		print(roomID)
-		if "".join(c.fetchall()) == "":
+		c.execute("SELECT * FROM rooms WHERE name=\""+roomID+"\"")
+		if not c.fetchall():
 			c.execute("INSERT INTO rooms VALUES (\""+roomID+"\")")
 			conn.commit()
 			return roomID
 
 
-@socketio.on('msg')
-def handle_msg(msg):
+@socketio.on('send')
+def handle_msg(data):
         #Messages are in the form ROOM:::MESSAGE
-        print('received ' + msg)
-        emit('receive', msg.split(":::")[1], room=msg.split(":::")[0])
+        emit('display', data, room=data['room'])
         eventlet.sleep(0)
 
 @socketio.on('join')
@@ -57,11 +50,11 @@ def on_join(room):
         join_room(room)
         print(room)
         #emit('confirm', str(id))
-        emit('receive', 'User '+str(id)+' has entered the room.', room=room)
+        emit('display', {'name': 'sys', 'msg': 'User '+str(id)+' has entered the room.'}, room=room)
         eventlet.sleep(0)
 
 @socketio.on('disconnect')
 def on_leave():
         print("somebody disconnected")
 socketio.run(app, host="0.0.0.0", port=80)
-#socketio.run(app, host="127.0.0.1", port=5000) for testing
+#socketio.run(app, host="127.0.0.1", port=5000) #for testing

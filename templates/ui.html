@@ -36,7 +36,6 @@
 			$('#textBox').keydown(function(e) {
 				var msg = $('#textBox').val();
 				if (e.which == 13 && msg !== "") {
-					console.log("yo: " + $('#textBox').val());
 					//$('#chat-content').append('<p id='+Date.now()+' class=\'msg\'>' + msg + '</p>');
 					$('#chat-content').append(""+
 							"<div id="+Date.now()+" style=\"opacity:1.0\"><span class=\"mdl-chip mdl-chip--contact\">"+

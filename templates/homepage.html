@@ -16,7 +16,7 @@
 				if (counter == 1) {
 					$.post("/create", function(url) {
 						console.log("Here is a url: "+url)
-						$("#chatLink").append("<p><a href=\"/a/chat/" + url + "\">" + url + "</a></p>");
+						$("#chatLink").append("<p><a href=\"/" + url + "\">" + url + "</a></p>");
 					});
 				}
 			});
