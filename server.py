@@ -30,16 +30,17 @@ def room(roomID):
 @app.route('/create', methods = ['POST'])
 def create_room():
 	#list of all alphanumeric characters
-	return "imaurl.com"
-	"""chars = [chr(a) for a in (range(48,58)+range(97,123)+range(65,91))]
+	chars = [chr(a) for a in (range(48,58)+range(97,123)+range(65,91))]
 	while True:
 		#generate chat room name
 		roomID = "".join([choice(chars) for a in range(8)])
 		c.execute("SELECT * FROM ChatRooms WHERE name=\""+roomID+"\"")
-		if c.fetchall():
+		print("yo boi:"+c.fetchall())
+		return "lmaoimaurl.com"
+		'''if c.fetchall():
 			c.execute("INSERT INTO rooms VALUES (\""+roomID+"\")")
 			conn.commit()
-			return roomID"""
+			return roomID'''
 
 @socketio.on('msg')
 def handle_msg(msg):
