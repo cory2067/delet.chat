@@ -1,6 +1,8 @@
 # delet.chat
 
-
+Homepage:
+  Make work with mobile devices
+  Animate fade in of page title and new chat button
 
 Box: how long to have messages last for (idk, maybe we should just control this for everyone)
 
