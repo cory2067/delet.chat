@@ -12,7 +12,7 @@ rooms = dict()
 
 @app.route('/')
 def index():
-	return render_template('newhomepage.html')
+	return render_template('index.html')
 
 
 @app.route('/<roomID>')
