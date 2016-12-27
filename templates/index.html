@@ -20,13 +20,34 @@
 		#box_wrap {
 			position: absolute;
 			left: 50%;
-			top: 50%
+			top: 50%;
+
+			opacity: 1;
+			animation-name: fadeBox;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in-out;
+			animation-duration: 1.25s;
 		}
+
+		@keyframes fadeBox {
+			0% {
+				opacity: 0;
+				top: 53%;
+			}
+			70% {
+				top: 50%;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+
     #box {
 			position: relative;
 			left: -50%;
 			width: 350px;
-    }
+		}
+
     .create-chat {
       cursor: pointer;
       border-style: solid;

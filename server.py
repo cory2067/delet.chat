@@ -63,3 +63,4 @@ def on_leave(data):
 	print(username + " disconnected from room " + room)
 
 socketio.run(app, host="0.0.0.0", port=80)
+#socketio.run(app, host="127.0.0.1", port=5000) #testing
