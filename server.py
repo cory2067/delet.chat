@@ -54,11 +54,11 @@ def on_leave(data):
 	username = data['name']
 	room = data['room']
 	rooms[room].remove(username)
-	if not len(rooms[room]):
-		del rooms[room]
 	emit('listusers', {'users': rooms[room]}, room=room)
 	emit('display', {'name': 'sys', 'msg': username + ' left.'}, room=room)
 	print(username + " disconnected from room " + room)
+	if not len(rooms[room]):
+		del rooms[room]
 
 socketio.run(app, host="0.0.0.0", port=80)
 #socketio.run(app, host="127.0.0.1", port=5000) #testing
