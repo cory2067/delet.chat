@@ -63,6 +63,7 @@
 		}
 
 		$(document).ready(function() {
+			//var socket = io.connect("http://127.0.0.1:5000", {
 			var socket = io.connect("http://delet.us:80", {
 			});
 
@@ -102,6 +103,22 @@
 				}
 			});
 
+			var audio = document.createElement("audio");
+			audio.src = "/static/notify.mp3";
+
+			var unseen = 0;
+			var toggle = false;
+			var unfocused = false;
+			setInterval(function() {
+					toggle = !toggle;
+					document.title = ((toggle&&unfocused)?"("+unseen+") ":"") + "delet.us"
+					console.log(unfocused);
+					if(document.hasFocus()) {
+						unfocused = false;
+						unseen = 0;
+					}
+			}, 1000);
+
 			socket.on('display', function(data) {
 				$('#chat-content').append("" +
 						"<div style=\"opacity:1.0\">" +
@@ -113,12 +130,13 @@
 						"");
 
 						//play notification sound
-						var audio = document.createElement("audio");
-						audio.src = "/static/notify.mp3";
-						audio.addEventListener("ended", function () {
-								document.removeChild(this);
-						}, false);
-						audio.play();
+						if(!document.hasFocus()) {
+							unfocused = true;
+							audio.pause();
+							audio.currentTime = 0;
+							audio.play();
+							unseen++;
+						}
 			});
 
 			$("#headerTitle").html('Room ID: {{room}}'); //set room title
