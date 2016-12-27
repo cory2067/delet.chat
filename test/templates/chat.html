@@ -135,8 +135,8 @@
 					console.log("Message sent: " + $('#textBox').val());
 					//$('#chat-content').append('<p id='+Date.now()+' class=\'msg\'>' + msg + '</p>');
 					//console.log(msg);
-					e.preventDefault();
-					$('form').submit();
+//					e.preventDefault();
+//					$('form').submit();
 					socket.emit('send', {
 						'room': '{{room}}',
 						'name': username,

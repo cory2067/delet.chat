@@ -123,8 +123,6 @@
 				var msg = $('#textBox').val();
 				if (e.which == 13 && msg !== "" && e.shiftKey != 1) {
 					console.log("Message sent: " + $('#textBox').val());
-					e.preventDefault();
-					$('form').submit();
 					socket.emit('send', {
 						'room': '{{room}}',
 						'name': username,
