@@ -1,0 +1,58 @@
+<html>
+
+<head>
+	<title>Delet Chat Homepage</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<style>
+    @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200');
+
+    body {
+      background-image: url("http://put.nu/files/iU3Oidc.png");
+    }
+    .box {
+      margin: 0 auto;
+      width: 500px;
+      margin-top: 670px;
+    }
+    .create-chat {
+      cursor: pointer;
+      border-style: solid;
+      border-width: 1px;
+      border-color: white;
+      border-radius: 50px;
+      padding-left: 20px;
+      padding-right: 20px;
+      font-family: 'Source Sans Pro',sans-serif;
+      font-size: 55px;
+      color: white;
+    }
+    #text {
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Chrome/Safari/Opera */
+      -khtml-user-select: none; /* Konqueror */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+    }
+	</style>
+
+  <script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+			var counter = 0;
+			$("#text").click(function() {
+				counter++;
+				if (counter == 1) {
+          $.post("/create", function(url) {
+            window.location.replace(url);
+					});
+				}
+			});
+		});
+	</script>
+
+</head>
+
+<body>
+	<div class="box">
+      <p id="text" style="text-align:center"><span class="create-chat">Create a chat</span></p>
+	</div>
+</body>

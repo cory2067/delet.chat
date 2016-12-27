@@ -2,21 +2,31 @@
 
 <head>
 	<title>Delet Chat</title>
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.0.6/socket.io.min.js"></script>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 	<style>
+
+		#headerTitle {
+			font-size: 125%;
+		}
+
 		#chat {
-			height: 50%;
+			height: 75%;
 			position: relative;
 		}
 
 		#chat-content {
 			position: absolute;
 			bottom: 0;
+		}
+
+		#msgusername {
+			margin: 0;
+			padding: 0;
 		}
 
 		#popup-full {
@@ -27,6 +37,10 @@
 			width: 100%;
 			background-color: grey;
 			opacity: 0.3;
+		}
+
+		#sidebar-user {
+			padding-left: 5%;
 		}
 	</style>
 	<script type="text/javascript" charset="utf-8">
@@ -47,7 +61,8 @@
 
 		$(document).ready(function() {
 
-			var socket = io.connect("http://delet.us:80", {
+			var socket = io.connect("http://127.0.0.1:5000", { //		for testing
+				//				transports: ['websocket']
 			});
 
 			//popup that asks for username
@@ -61,12 +76,15 @@
 				break;
 			}
 
+			var initials = "AA";
 			function getInitials(name) {
 				sep = name.split(" ");
 				if(sep.length == 1) { return sep[0][0] }
 				else if(sep[1][0].match(/[a-zA-Z]/i)) { return sep[0][0] + sep[1][0] }
 				else { return sep[0][0] }
 			}
+
+			initials = getInitials(name);
 
 
 			socket.on('connect', function() {
@@ -88,16 +106,22 @@
 
 			socket.on('display', function(data) {
 				$('#chat-content').append("" +
-						"<div id=" + Date.now() + " style=\"opacity:1.0\">" +
-						"<p id='msgusername'>" + data['name'] + "</p>" +
-						"<span class=\"mdl-chip mdl-chip--contact\">" +
-						"<span class=\"mdl-chip__contact mdl-color--teal mdl-color-text--white\">" + getInitials(data['name']) + "</span>" +
-						"<span class=\"mdl-chip__text\">" + renderHTML(data['msg']) + "</span>" +
-						"</span></div>" +
-						"")
+					"<div id=" + Date.now() + " style=\"opacity:1.0\">" +
+					"<p id='msgusername'>" + data['name'] + "</p>" +
+					"<span class=\"mdl-chip mdl-chip--contact\">" +
+					"<span class=\"mdl-chip__contact mdl-color--teal mdl-color-text--white\">" + getInitials(data['name']) + "</span>" +
+					"<span class=\"mdl-chip__text\">" + renderHTML(data['msg']) + "</span>" +
+					"</span></div>" +
+					"")
 			});
 
 			$("#headerTitle").html('Room ID: {{room}}'); //set room title
+
+			/*$('#button').click(function() {
+				var msg = $('#text').val();
+				$("#text").val("");
+				socket.emit('msg', 'mememan:::' + msg);
+			});*/
 
 			window.onbeforeunload = function(e) {
 				socket.emit('leave', {'room': '{{room}}', 'name': username});
@@ -109,6 +133,8 @@
 				var msg = $('#textBox').val();
 				if (e.which == 13 && msg !== "" && e.shiftKey != 1) {
 					console.log("Message sent: " + $('#textBox').val());
+					//$('#chat-content').append('<p id='+Date.now()+' class=\'msg\'>' + msg + '</p>');
+					//console.log(msg);
 					e.preventDefault();
 					$('form').submit();
 					socket.emit('send', {
@@ -119,8 +145,7 @@
 					$("#textBox").val("");
 				}
 			});
-
-			setInterval(function() { //function that changes the opacity of messages after a certain amount of time
+			setInterval(function() {
 				console.log("here");
 				$('#chat-content').children().each(function() {
 					$(this).css("opacity", $(this).css("opacity") - .02);
@@ -129,43 +154,57 @@
 					}
 				});
 			}, 100);
-
+			//function that changes the opacity of messages after a certain amount of time
+			//$('.msg')
 		});
 	</script>
 </head>
 
 <body>
+	<!--<div id="popup-full">
+			<div class="mdl-textfield mdl-js-textfield">
+		    <input class="mdl-textfield__input" type="text" id="sample1">
+		    <label class="mdl-textfield__label" for="sample1">Enter your username</label>
+	  	</div>
+		<div>
+	</div>-->
 
-<!-- The drawer is always open in large screens. The header is always shown,
-even in small screens. -->
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
+	<!-- The drawer is always open in large screens. The header is always shown,
+  even in small screens. -->
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
             mdl-layout--fixed-header">
-	<header class="mdl-layout__header">
-		<div class="mdl-layout__header-row">
-			<div class="mdl-layout-spacer"></div>
+		<header class="mdl-layout__header">
+			<div class="mdl-layout__header-row">
+				<div class="mdl-layout-spacer"></div>
+			</div>
+		</header>
+		<div class="mdl-layout__drawer">
+			<span class="mdl-layout-title" id="headerTitle">Title</span>
+			<nav class="mdl-navigation" id="sidebar">
+				<!--<a class="mdl-navigation__link" href="">Link</a>-->
+				<!--<a class="mdl-navigation__link" href="">Link</a>-->
+				<!--<a class="mdl-navigation__link" href="">Link</a>-->
+				<!--<a class="mdl-navigation__link" href="">Link</a>-->
+			</nav>
 		</div>
-	</header>
-	<div class="mdl-layout__drawer">
-		<span class="mdl-layout-title" id="headerTitle">Title</span>
-		<nav class="mdl-navigation" id="sidebar">
-		</nav>
-	</div>
-	<main class="mdl-layout__content">
-		<div class="page-content">
-			<div id="chat">
-				<div id="chat-content">
+		<main class="mdl-layout__content">
+			<div class="page-content">
+				<div id="chat">
+					<div id="chat-content">
 
+					</div>
+				</div>
+				<div id="text" class="mdl-textfield mdl-js-textfield">
+					<!--<input class="mdl-textfield__input" type="text" id="textBox">-->
+					<!--<div class="mdl-textfield__input" id="textBox" type="submit" placeholder="Type a message..." contenteditable="true" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div>-->
+					<div class="mdl-textfield mdl-js-textfield">
+						<textarea class="mdl-textfield__input" type="text" rows= "1" id="textBox" style='overflow-y:hidden;' onkeyup='this.rows = (this.value.split("\n").length||1);'></textarea>
+						<label class="mdl-textfield__label" for="textBox">Type a message...</label>
+					</div>
 				</div>
 			</div>
-			<div id="text" class="mdl-textfield mdl-js-textfield">
-				<div class="mdl-textfield mdl-js-textfield">
-					<textarea class="mdl-textfield__input" type="text" rows= "1" id="textBox" style='overflow-y:hidden;' onkeyup='this.rows = (this.value.split("\n").length||1);'></textarea>
-					<label class="mdl-textfield__label" for="textBox">Type a message...</label>
-				</div>
-			</div>
-		</div>
-	</main>
-</div>
+		</main>
+	</div>
 </body>
 
 </html>

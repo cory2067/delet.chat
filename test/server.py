@@ -9,16 +9,13 @@ socketio = SocketIO(app)
 
 rooms = dict()
 
-
 @app.route('/')
 def index():
 	return render_template('newhomepage.html')
 
-
 @app.route('/<roomID>')
 def room(roomID):
 	return render_template('chat.html', room=roomID)
-
 
 #homepage sends a POST request, returns a new room
 @app.route('/create', methods = ['POST'])
@@ -33,24 +30,24 @@ def create_room():
 
 @socketio.on('send')
 def handle_msg(data):
-	#Messages are in the form ROOM:::MESSAGE
-	emit('display', data, room=data['room'])
-	eventlet.sleep(0)
-
+		#Messages are in the form ROOM:::MESSAGE
+		emit('display', data, room=data['room'])
+		eventlet.sleep(0)
 
 @socketio.on('join')
 def on_join(data):
-	room = data['room']
-	print(data)
-	if room not in rooms:
-		rooms[room] = []
-	rooms[room].append(data['name'])
-	join_room(room)
-	print("user joined room:" + room)
-	print('rooms var in on join: ' + str(rooms))
-	emit('display', {'name': 'sys', 'msg': data['name'] + ' has entered the room.'}, room=room)
-	emit('listusers', {'users': rooms[room]}, room=room)
-	eventlet.sleep(0)
+		room = data['room']
+		print(data)
+		if room not in rooms:
+			rooms[room] = []
+		rooms[room].append(data['name'])
+		join_room(room)
+		print("user joined room:" + room)
+		print('rooms var in on join: ' + str(rooms))
+		#emit('confirm', str(id))
+		emit('display', {'name': 'sys', 'msg': data['name'] + ' has entered the room.'}, room=room)
+		emit('listusers', {'users': rooms[room]}, room=room)
+		eventlet.sleep(0)
 
 
 @socketio.on('leave')
@@ -62,4 +59,4 @@ def on_leave(data):
 	emit('display', {'name': 'sys', 'msg': username + ' left.'}, room=room)
 	print(username + " disconnected from room " + room)
 
-socketio.run(app, host="0.0.0.0", port=80)
+socketio.run(app, host="127.0.0.1", port=5000) #for testing
