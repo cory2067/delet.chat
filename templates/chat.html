@@ -63,8 +63,6 @@
 		}
 
 		$(document).ready(function() {
-			var audio = new Audio('/static/notify.mp3');
-
 			var socket = io.connect("http://delet.us:80", {
 			});
 
@@ -114,7 +112,15 @@
 						"</span></div>" +
 						"")
 			});
+
+			//play notification sound
+			var audio = document.createElement("audio");
+			audio.src = "/static/notify.mp3";
+			audio.addEventListener("ended", function () {
+					document.removeChild(this);
+			}, false);
 			audio.play();
+
 			$("#headerTitle").html('Room ID: {{room}}'); //set room title
 
 			window.onbeforeunload = function(e) {
