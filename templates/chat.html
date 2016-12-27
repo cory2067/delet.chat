@@ -24,7 +24,7 @@
 			bottom: 0;
 		}
 
-		#msgusername {
+		.msgusername {
 			margin: 0;
 			padding: 0;
 		}
@@ -105,8 +105,8 @@
 
 			socket.on('display', function(data) {
 				$('#chat-content').append("" +
-						"<div id=" + Date.now() + " style=\"opacity:1.0\">" +
-						"<p id='msgusername'>" + data['name'] + "</p>" +
+						"<div style=\"opacity:1.0\">" +
+						"<p class='msgusername'>" + data['name'] + "</p>" +
 						"<span class=\"mdl-chip mdl-chip--contact\">" +
 						"<span class=\"mdl-chip__contact mdl-color--teal mdl-color-text--white\">" + getInitials(data['name']) + "</span>" +
 						"<span class=\"mdl-chip__text\">" + renderText(data['msg']) + "</span>" +
@@ -138,7 +138,7 @@
 			setInterval(function() { //function that changes the opacity of messages after a certain amount of time
 				console.log("here");
 				$('#chat-content').children().each(function() {
-					$(this).css("opacity", $(this).css("opacity") - .02);
+					$(this).css("opacity", $(this).css("opacity") - .01);
 					if (!($(this).css("opacity") > 0)) {
 						$(this).remove();
 					}

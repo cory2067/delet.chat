@@ -9,7 +9,6 @@ socketio = SocketIO(app)
 
 rooms = dict()
 
-
 @app.route('/')
 def index():
 	return render_template('index.html')
@@ -26,7 +25,6 @@ def create_room():
 	#list of all alphanumeric characters
 	chars = [chr(a) for a in (list(range(48,58))+list(range(97,123))+list(range(65,91)))]
 	roomID = "".join([choice(chars) for a in range(8)])
-	rooms[roomID] = []
 	print('inner rooms var: ' + str(rooms))
 	return roomID
 
@@ -35,7 +33,6 @@ def create_room():
 def handle_msg(data):
 	#Messages are in the form ROOM:::MESSAGE
 	emit('display', data, room=data['room'])
-	eventlet.sleep(0)
 
 
 @socketio.on('join')
@@ -50,7 +47,6 @@ def on_join(data):
 	print('rooms var in on join: ' + str(rooms))
 	emit('display', {'name': 'sys', 'msg': data['name'] + ' has entered the room.'}, room=room)
 	emit('listusers', {'users': rooms[room]}, room=room)
-	eventlet.sleep(0)
 
 
 @socketio.on('leave')
@@ -58,6 +54,8 @@ def on_leave(data):
 	username = data['name']
 	room = data['room']
 	rooms[room].remove(username)
+	if not len(rooms[room]):
+		del rooms[room]
 	emit('listusers', {'users': rooms[room]}, room=room)
 	emit('display', {'name': 'sys', 'msg': username + ' left.'}, room=room)
 	print(username + " disconnected from room " + room)
