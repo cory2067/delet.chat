@@ -8,11 +8,20 @@
 
     body {
       background-image: url("http://put.nu/files/iU3Oidc.png");
+			background-repeat:no-repeat;
+			background-size: auto,100%;
+			background-position:center top;
+
     }
-    .box {
-      margin: 0 auto;
-      width: 500px;
-      margin-top: 670px;
+		#wrapper {
+			position: absolute;
+			left: 50%;
+			top: 50%
+		}
+    #box {
+			position: relative;
+			left: -50%;
+			width: 350px;
     }
     .create-chat {
       cursor: pointer;
@@ -52,7 +61,9 @@
 </head>
 
 <body>
-	<div class="box">
-      <p id="text" style="text-align:center"><span class="create-chat">Create a chat</span></p>
+	<div id="wrapper">
+		<div id="box">
+	      <p id="text" style="text-align:center"><span class="create-chat">Create a chat</span></p>
+		</div>
 	</div>
 </body>
