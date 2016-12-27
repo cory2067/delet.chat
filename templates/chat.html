@@ -111,30 +111,6 @@
 			      "<span class=\"mdl-chip__text\">" + renderText(data['msg']) + "</span>" +
 			      "</span></div>" +
 			      "");
-			  if (!(document.hasFocus())) {
-			    //play notification sound
-			    var audio = document.createElement("audio");
-			    audio.src = "/static/notify.mp3";
-			    audio.addEventListener("ended", function () {
-			      document.removeChild(this);
-			    }, false);
-			    audio.play();
-
-			    //notification in tab
-			    var temp = 0;
-			    var interval = setInterval(function() {
-			      if (temp == 0) {
-			        document.title = "(1) Delet Chat";
-			        temp++;
-			      }
-			      else {
-			        document.title = "Delet Chat";
-			        temp--;
-			      }
-			    },1000);
-					//not sure if this focus thing will work
-			    window.focus = clearInterval(interval));
-			  }
 			});
 
 			$("#headerTitle").html('Room ID: {{room}}'); //set room title
