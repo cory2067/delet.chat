@@ -1,9 +1,9 @@
 # delet.chat
 
 
-Box: how long to have messages last for (idk, maybe we should just control this for everyone)
-
-Have notification sign on tab
+Slider to determine life (fade rate) of messages 
+Modify CSS of chat.html to improve chat area
+Setting to mute chat notifications
 
 Ability to send pictures
 
