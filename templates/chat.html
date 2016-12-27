@@ -110,16 +110,16 @@
 						"<span class=\"mdl-chip__contact mdl-color--teal mdl-color-text--white\">" + getInitials(data['name']) + "</span>" +
 						"<span class=\"mdl-chip__text\">" + renderText(data['msg']) + "</span>" +
 						"</span></div>" +
-						"")
-			});
+						"");
 
-			//play notification sound
-			var audio = document.createElement("audio");
-			audio.src = "/static/notify.mp3";
-			audio.addEventListener("ended", function () {
-					document.removeChild(this);
-			}, false);
-			audio.play();
+						//play notification sound
+						var audio = document.createElement("audio");
+						audio.src = "/static/notify.mp3";
+						audio.addEventListener("ended", function () {
+								document.removeChild(this);
+						}, false);
+						audio.play();
+			});
 
 			$("#headerTitle").html('Room ID: {{room}}'); //set room title
 
