@@ -3,20 +3,59 @@
 <head>
 	<title>Delet Chat Homepage</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.0.6/socket.io.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+	<meta name="theme-color" content="#2a3d58">
 	<style>
+    @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200');
 
+		html {
+			overflow-x: hidden;
+		}
+    body {
+      background-image: url("http://put.nu/files/iU3Oidc.png");
+			background-repeat:no-repeat;
+			background-size: cover;
+			background-position:center top;
+    }
+		#box_wrap {
+			position: absolute;
+			left: 50%;
+			top: 50%
+		}
+    #box {
+			position: relative;
+			left: -50%;
+			width: 350px;
+    }
+    .create-chat {
+      cursor: pointer;
+      border-style: solid;
+      border-width: 1px;
+      border-color: white;
+      border-radius: 50px;
+      padding-left: 20px;
+      padding-right: 20px;
+      font-family: 'Source Sans Pro',sans-serif;
+      font-size: 55px;
+      color: white;
+    }
+    #text {
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Chrome/Safari/Opera */
+      -khtml-user-select: none; /* Konqueror */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+    }
 	</style>
 
-	<script type="text/javascript" charset="utf-8">
+  <script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
 			var counter = 0;
-			$("#newChat").click(function() {
+			$("#text").click(function() {
 				counter++;
 				if (counter == 1) {
-					$.post("/create", function(url) {
-						console.log("Here is a url: "+url)
-						$("#chatLink").append("<p><a href=\"/" + url + "\">" + url + "</a></p>");
+          $.post("/create", function(url) {
+            window.location.replace(url);
 					});
 				}
 			});
@@ -26,8 +65,9 @@
 </head>
 
 <body>
-	<button id="newChat" type="button">Create new chat room</button>
-	<div id="chatLink">
-
+	<div id="box_wrap">
+		<div id="box">
+	      <p id="text" style="text-align:center"><span class="create-chat">Create a chat</span></p>
+		</div>
 	</div>
 </body>
