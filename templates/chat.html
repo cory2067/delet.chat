@@ -60,10 +60,14 @@
 		#alert-foreground {
 			position: absolute;
 			display: block;
-			left: 40%;
+			left: 50%;
 			top: 20%;
-			width: 20%;
 			z-index: 6;
+		}
+
+		#alerttext {
+				position: relative;
+				left: -50%;
 		}
 
 	</style>
@@ -258,7 +262,7 @@ even in small screens. -->
 	<div id="alert-background"></div>
 	<div id="alert-foreground">
 		<div id="alerttext" class="mdl-textfield mdl-js-textfield">
-			<div class="demo-card-square mdl-card mdl-shadow--2dp" style="min-height: 0">
+			<div class="demo-card-square mdl-card mdl-shadow--2dp" style="min-height: 0; width: auto;">
 				<div class="mdl-card__actions mdl-card--border">
 					<div class="mdl-textfield mdl-js-textfield">
 						<input class="mdl-textfield__input" id="username" type="text">
