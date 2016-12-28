@@ -47,6 +47,25 @@
 			color: #8c9eff !important;
 		}
 
+		#alert-background {
+			background-color: black;
+			opacity: .30;
+			position: absolute;
+			display: block;
+			width: 100%;
+			height: 100%;
+			z-index: 5;
+		}
+
+		#alert-foreground {
+			position: absolute;
+			display: block;
+			left: 40%;
+			top: 20%;
+			width: 20%;
+			z-index: 6;
+		}
+
 	</style>
 	<script type="text/javascript" charset="utf-8">
 		function renderText(text) {
@@ -68,45 +87,74 @@
 		}
 
 		$(document).ready(function() {
-			//var socket = io.connect("http://127.0.0.1:5000", {
-			var socket = io.connect("http://delet.us:80", {
-			});
+			var socket = null;
+			var test = "http://127.0.0.1:5000";
+			var prod = "http://delet.us:80";
 
 			//popup that asks for username
 			var username = "";
-			while (true) {
-				username = prompt("Pick a nickname", "");
-				if (!(username) || username.length > 25) {
-					alert("Error: Nickname should be between 1 and 25 characters.");
-					continue;
+
+			$('#username').keydown(function(e) {
+				if (e.which == 13) {
+					username = $('#username').val();
+					if (username.length >= 1 && username.length <= 25) {
+						$('#alert-background').css('display', 'none');
+						$('#alert-foreground').css('display', 'none');
+						sockets();
+					}
+					else {
+						$('#username').val("");
+						alert('Error, username must be between 1 and 25 characters.');
+					}
 				}
-				break;
+			});
+
+
+			function sockets() {
+				socket = io.connect(prod, {});
+
+				socket.on('connect', function () {
+					console.log("it work");
+					socket.emit('join',
+							{
+								'room': '{{room}}',
+								'name': username
+							}
+					);
+				});
+
+				socket.on('listusers', function (data) {
+					$("#sidebar").empty();
+					for (count = 0; count < data['users'].length; count++) {
+						$("#sidebar").append('<p style="padding-left: 5%">' + data['users'][count] + '</p>');
+					}
+				});
+
+				socket.on('display', function (data) {
+					$('#chat-content').append("" +
+							"<div style=\"opacity:1.0\">" +
+							"<p class='msgusername'>" + data['name'] + "</p>" +
+							"<span class=\"mdl-chip mdl-chip--contact\">" +
+							"<span class=\"mdl-chip__contact mdl-color--teal mdl-color-text--white\">" + getInitials(data['name']) + "</span>" +
+							"<span class=\"mdl-chip__text\">" + renderText(data['msg']) + "</span>" +
+							"</span></div>" +
+							"");
+
+				});
 			}
 
 			function getInitials(name) {
 				sep = name.split(" ");
-				if(sep.length == 1) { return sep[0][0] }
-				else if(sep[1][0].match(/[a-zA-Z]/i)) { return sep[0][0] + sep[1][0] }
-				else { return sep[0][0] }
-			}
-
-
-			socket.on('connect', function() {
-				console.log("it work");
-				socket.emit('join',
-						{
-							'room': '{{room}}',
-							'name': username
-						}
-				);
-			});
-
-			socket.on('listusers', function(data) {
-				$("#sidebar").empty();
-				for (count = 0; count < data['users'].length;  count++){
-					$("#sidebar").append('<p style="padding-left: 5%">'+data['users'][count]+'</p>');
+				if (sep.length == 1) {
+					return sep[0][0]
 				}
-			});
+				else if (sep[1][0].match(/[a-zA-Z]/i)) {
+					return sep[0][0] + sep[1][0]
+				}
+				else {
+					return sep[0][0]
+				}
+			}
 
 			var audio = document.createElement("audio");
 			audio.src = "/static/notify.mp3";
@@ -114,35 +162,24 @@
 			var unseen = 0;
 			var toggle = false;
 			var unfocused = false;
-			setInterval(function() {
-					toggle = !toggle;
-					document.title = ((toggle&&unfocused)?"("+unseen+") ":"") + "delet.us"
-					console.log(unfocused);
-					if(document.hasFocus()) {
-						unfocused = false;
-						unseen = 0;
-					}
+			setInterval(function () {
+				toggle = !toggle;
+				document.title = ((toggle && unfocused) ? "(" + unseen + ") " : "") + "delet.us"
+				console.log(unfocused);
+				if (document.hasFocus()) {
+					unfocused = false;
+					unseen = 0;
+				}
 			}, 1000);
 
-			socket.on('display', function(data) {
-				$('#chat-content').append("" +
-						"<div style=\"opacity:1.0\">" +
-						"<p class='msgusername'>" + data['name'] + "</p>" +
-						"<span class=\"mdl-chip mdl-chip--contact\">" +
-						"<span class=\"mdl-chip__contact mdl-color--teal mdl-color-text--white\">" + getInitials(data['name']) + "</span>" +
-						"<span class=\"mdl-chip__text\">" + renderText(data['msg']) + "</span>" +
-						"</span></div>" +
-						"");
-
-						//play notification sound
-						if(!document.hasFocus()) {
-							unfocused = true;
-							audio.pause();
-							audio.currentTime = 0;
-							audio.play();
-							unseen++;
-						}
-			});
+			//play notification sound
+			if (!document.hasFocus()) {
+				unfocused = true;
+				audio.pause();
+				audio.currentTime = 0;
+				audio.play();
+				unseen++;
+			}
 
 			$("#headerTitle").html('Room ID: {{room}}'); //set room title
 
@@ -218,6 +255,19 @@ even in small screens. -->
 			</div>
 		</div>
 	</main>
+	<div id="alert-background"></div>
+	<div id="alert-foreground">
+		<div id="alerttext" class="mdl-textfield mdl-js-textfield">
+			<div class="demo-card-square mdl-card mdl-shadow--2dp" style="min-height: 0">
+				<div class="mdl-card__actions mdl-card--border">
+					<div class="mdl-textfield mdl-js-textfield">
+						<input class="mdl-textfield__input" id="username" type="text">
+						<label class="mdl-textfield__label" for="username">Enter a username...</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 </body>
 
