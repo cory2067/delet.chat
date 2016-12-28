@@ -19,6 +19,11 @@ Unicode
 
 Environment variable on server of like "server type" that sets the JS and server.py to delet.us:80 so we can ez switch between test and prod
 
+-- notifications mute button
+-- random icon color for users
+-- move chat into the middle, widen a bit
+-- user list look nicer
+-- your messages aligned to the right?
 
 Features we have:
 Test server running from test directory on different port (maybe 5000 or whatever)
