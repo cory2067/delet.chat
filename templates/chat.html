@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+	<meta name="theme-color" content="#3f51b5">
 	<style>
 
 		#headerTitle {
@@ -55,6 +56,23 @@
 			width: 100%;
 			height: 100%;
 			z-index: 5;
+
+			animation-name: fade;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in-out;
+			animation-duration: 0.6s;
+			-webkit-transition: all 0.5s ease-in-out;
+			-moz-transition: all 0.5s ease-in-out;
+			-o-transition: all 0.5s ease-in-out;
+			transition: all 0.5s ease-in-out;
+		}
+		@keyframes fade {
+			0% {
+				opacity: 0.6;
+			}
+			100% {
+				opacity: 0.3;
+			}
 		}
 
 		#alert-foreground {
@@ -63,6 +81,27 @@
 			left: 50%;
 			top: 20%;
 			z-index: 6;
+
+			animation-name: fade2;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in-out;
+			animation-duration: 1s;
+			-webkit-transition: all 0.2s ease-in-out;
+			-moz-transition: all 0.2s ease-in-out;
+			-o-transition: all 0.2s ease-in-out;
+			transition: all 0.2s ease-in-out;
+		}
+		@keyframes fade2 {
+			0% {
+				top: 17%;
+				opacity: 0;
+			}
+			50% {
+				top: 20%;
+			}
+			100% {
+				opacity: 1;
+			}
 		}
 
 		#alerttext {
@@ -102,8 +141,12 @@
 				if (e.which == 13) {
 					username = $('#username').val();
 					if (username.length >= 1 && username.length <= 25) {
-						$('#alert-background').css('display', 'none');
-						$('#alert-foreground').css('display', 'none');
+						$('#alert-background').css('opacity', 0);
+						$('#alert-foreground').css('opacity', 0);
+						setTimeout(function() {
+							$('#alert-background').css('display', 'none');
+							$('#alert-foreground').css('display', 'none');
+						}, 500);
 						sockets();
 					}
 					else {
@@ -206,7 +249,7 @@
 				}
 			});
 
-			var fadeTime = 0.1;
+			var fadeTime = 0.01;
 			$('#fadetime').on('change', function () {
 				fadeTime = $(this).val() / 1000;
 			});
