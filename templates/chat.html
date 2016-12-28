@@ -42,6 +42,11 @@
 		#sidebar-user {
 			padding-left: 5%;
 		}
+
+		.mdl-slider {
+			color: #8c9eff !important;
+		}
+
 	</style>
 	<script type="text/javascript" charset="utf-8">
 		function renderText(text) {
@@ -71,8 +76,8 @@
 			var username = "";
 			while (true) {
 				username = prompt("Pick a nickname", "");
-				if (!(username) || username.length > 16) {
-					alert("Error: Nickname should be under 16 characters.");
+				if (!(username) || username.length > 25) {
+					alert("Error: Nickname should be between 1 and 25 characters.");
 					continue;
 				}
 				break;
@@ -160,10 +165,15 @@
 				}
 			});
 
+			var fadeTime = 0.1;
+			$('#fadetime').on('change', function () {
+				fadeTime = $(this).val() / 1000;
+			});
+
 			setInterval(function() { //function that changes the opacity of messages after a certain amount of time
 				console.log("here");
 				$('#chat-content').children().each(function() {
-					$(this).css("opacity", $(this).css("opacity") - .01);
+					$(this).css("opacity", $(this).css("opacity") - fadeTime);
 					if (!($(this).css("opacity") > 0)) {
 						$(this).remove();
 					}
@@ -182,7 +192,10 @@ even in small screens. -->
             mdl-layout--fixed-header">
 	<header class="mdl-layout__header">
 		<div class="mdl-layout__header-row">
-			<div class="mdl-layout-spacer"></div>
+			<div class="mdl-layout-spacer">
+				<input class="mdl-slider mdl-js-slider" id="fadetime" type="range" min="0" max="100" value="10" tabindex="0">
+			</div>
+
 		</div>
 	</header>
 	<div class="mdl-layout__drawer">
