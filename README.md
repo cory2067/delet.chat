@@ -1,7 +1,7 @@
 # delet.chat
 
 
-Slider to determine life (fade rate) of messages 
+Slider to determine life (fade rate) of messages
 Modify CSS of chat.html to improve chat area
 Setting to mute chat notifications
 
